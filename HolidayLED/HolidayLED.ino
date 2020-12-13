@@ -1,5 +1,6 @@
 // This Arduino sketch is designed to be used with 
 
+#include <avr/eeprom.h>
 #include <Adafruit_NeoPixel.h>
 #ifdef __AVR__
  #include <avr/power.h> // Required for 16 MHz Adafruit Trinket
@@ -20,9 +21,9 @@ Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
 //   NEO_RGBW    Pixels are wired for RGBW bitstream (NeoPixel RGBW products)
 
 void setup() {
-  //randomSeed(analogRead(0));
-  //delay(10);
-  //random(100);
+  uint16_t seed = eeprom_read_word(0);
+  randomSeed(seed++);
+  eeprom_write_word(0, seed);
 
   strip.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
   strip.show();            // Turn OFF all pixels ASAP
@@ -30,15 +31,15 @@ void setup() {
 }
 
 void loop() {
-  delay(10);
+  // delay(10);
   //*
-  switch(GenerateRandom(8))
+  switch(random(8))
   {
     case 0: // Cycle a rainbow across all LEDs
       rainbow(10);
       break;
     case 1: // Fade in/out effect
-      switch(GenerateRandom(4))
+      switch(random(4))
       {
         case 0: FadeInOut(0xff, 0x00, 0x00); break;
         case 1: FadeInOut(0x00, 0xff, 0x00); break;
@@ -48,7 +49,7 @@ void loop() {
       }
       break;
     case 2: // Bounce back/forth effect
-      switch(GenerateRandom(4))
+      switch(random(4))
       {
         case 0: CylonBounce(0xff, 0x00, 0x00, 4, 10, 50); break;
         case 1: CylonBounce(0x00, 0xff, 0x00, 4, 10, 50); break;
@@ -57,7 +58,7 @@ void loop() {
       }
       break;
     case 3: // Twinkle solid color effect
-      int num = GenerateRandom(4);
+      int num = random(4);
 
       for (int i = 0; i < 10; ++i)
       {
@@ -81,11 +82,11 @@ void loop() {
       }
       break;
     case 6: // Snow Sprinkle (Sprinkle on white background)
-      int effectSpeedDelay = GenerateRandom(900) + 100;
+      int effectSpeedDelay = random(900) + 100;
       SnowSparkle(0x10, 0x10, 0x10, 20, effectSpeedDelay);
       break;
     case 7: // Running lights
-      switch(GenerateRandom(4))
+      switch(random(4))
       {
         case 0: RunningLights(0xff,0x00,0x00, 50); break;
         case 1: RunningLights(0x00,0xff,0x00, 50); break;
@@ -96,6 +97,7 @@ void loop() {
   // */
 }
 
+/*
 int GenerateRandom(int modulo)
 {
     int value = 0;
@@ -106,6 +108,7 @@ int GenerateRandom(int modulo)
     value = value % modulo;
     return value;
 }
+*/
 
 void RGBLoop(){
   for(int j = 0; j < 3; j++ ) {
