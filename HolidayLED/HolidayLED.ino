@@ -134,18 +134,18 @@ void setup() {
 
 int mode = 0;
 int submode3 = 0;
-int submode4 = 0;
+// int submode4 = 0;
 void loop()
 {
   EVERY_N_SECONDS(SECONDS_PER_MODE) {
-    mode = random(10);
+    mode = random(7);
     submode3 = random(3);
-    submode4 = random(4);
-    setAll(0, 0, 0);
+    // submode4 = random(4);
+    // setAll(0, 0, 0);
   }
   
   EVERY_N_SECONDS( SECONDS_PER_PALETTE ) { 
-    chooseNextColorPalette( gTargetPalette ); 
+    chooseNextColorPalette( gTargetPalette );
   }
   
   EVERY_N_MILLISECONDS( 10 ) {
@@ -179,35 +179,35 @@ void loop()
         case 2: FadeInOut(0x00, 0x00, 0xff); break;
       }
       break;
+//    case 5:
+//      switch(submode4)
+//      {
+//        case 0: CylonBounce(0xff, 0x00, 0x00, 4, 10, 50); break;
+//        case 1: CylonBounce(0x00, 0xff, 0x00, 4, 10, 50); break;
+//        case 2: CylonBounce(0x00, 0x00, 0xff, 4, 10, 50); break;
+//        case 3: CylonBounce(0xff, 0xff, 0xff, 4, 10, 50); break;
+//      }
+//      break;
+//    case 6:
+//        switch(submode4)
+//        {
+//          case 0: Twinkle(0xff, 0x00, 0x00, 10, 100, false); break;
+//          case 1: Twinkle(0x00, 0xff, 0x00, 10, 100, false); break;
+//          case 2: Twinkle(0x00, 0x00, 0xff, 10, 100, false); break;
+//          case 3: Twinkle(0xff, 0xff, 0xff, 10, 100, false); break;
+//        }
+//      break;
     case 5:
-      switch(submode4)
-      {
-        case 0: CylonBounce(0xff, 0x00, 0x00, 4, 10, 50); break;
-        case 1: CylonBounce(0x00, 0xff, 0x00, 4, 10, 50); break;
-        case 2: CylonBounce(0x00, 0x00, 0xff, 4, 10, 50); break;
-        case 3: CylonBounce(0xff, 0xff, 0xff, 4, 10, 50); break;
-      }
-      break;
-    case 6:
-        switch(submode4)
-        {
-          case 0: Twinkle(0xff, 0x00, 0x00, 10, 100, false); break;
-          case 1: Twinkle(0x00, 0xff, 0x00, 10, 100, false); break;
-          case 2: Twinkle(0x00, 0x00, 0xff, 10, 100, false); break;
-          case 3: Twinkle(0xff, 0xff, 0xff, 10, 100, false); break;
-        }
-      break;
-    case 7:
       TwinkleRandom(20, 100, false);
       break;
-    case 8:
-      EVERY_N_SECONDS(SECONDS_PER_MODE) {
-        setAll(0, 0, 0);
-      }
-
-      Sparkle(0xff, 0xff, 0xff, 0);
-      break;
-    case 9:
+//    case 8:
+//      EVERY_N_SECONDS(SECONDS_PER_MODE) {
+//        setAll(0, 0, 0);
+//      }
+//
+//      Sparkle(0xff, 0xff, 0xff, 0);
+//      break;
+    case 6:
       int effectSpeedDelay = random(900) + 100;
       SnowSparkle(0x10, 0x10, 0x10, 20, effectSpeedDelay);
       
