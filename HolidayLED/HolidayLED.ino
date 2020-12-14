@@ -14,7 +14,7 @@
 #define MAX_MA       4000
 #define MAX_BRIGHTNESS 255
 
-#define SECONDS_PER_MODE  10
+#define SECONDS_PER_MODE  60
 
 //  TwinkleFOX: Twinkling 'holiday' lights that fade in and out.
 //  Colors are chosen from a palette; a few palettes are provided.
@@ -118,7 +118,7 @@ CRGBPalette16 gTargetPalette;
 
 void setup() {
   delay( 3000 ); //safety startup delay
-  
+
   uint16_t seed = eeprom_read_word(0);
   randomSeed(seed++);
   eeprom_write_word(0, seed);
@@ -138,9 +138,10 @@ int submode4 = 0;
 void loop()
 {
   EVERY_N_SECONDS(SECONDS_PER_MODE) {
-    mode = random(11);
+    mode = random(10);
     submode3 = random(3);
     submode4 = random(4);
+    setAll(0, 0, 0);
   }
   
   EVERY_N_SECONDS( SECONDS_PER_PALETTE ) { 
@@ -151,6 +152,7 @@ void loop()
     nblendPaletteTowardPalette( gCurrentPalette, gTargetPalette, 12);
   }
 
+  //*
   switch(mode)
   {
     case 0:
@@ -210,17 +212,17 @@ void loop()
       SnowSparkle(0x10, 0x10, 0x10, 20, effectSpeedDelay);
       
       break;
-    case 10:
-      switch(submode4)
-      {
-        case 0: RunningLights(0xff,0x00,0x00, 50); break;
-        case 1: RunningLights(0x00,0xff,0x00, 50); break;
-        case 2: RunningLights(0x00,0x00,0xff, 50); break;
-        case 3: RunningLights(0xff,0xff,0xff, 50); break;
-      }
-      break;
-      
+//    case 10:
+//      switch(submode4)
+//      {
+//        case 0: RunningLights(0xff,0x00,0x00, 50); break;
+//        case 1: RunningLights(0x00,0xff,0x00, 50); break;
+//        case 2: RunningLights(0x00,0x00,0xff, 50); break;
+//        case 3: RunningLights(0xff,0xff,0xff, 50); break;
+//      }
+//      break;
   }
+  // */
 }
 
 void rainbow_wave(uint8_t thisSpeed, uint8_t deltaHue) {     // The fill_rainbow call doesn't support brightness levels.
@@ -645,26 +647,28 @@ void SnowSparkle(byte red, byte green, byte blue, int SparkleDelay, int SpeedDel
   delay(SpeedDelay);
 }
 
-void RunningLights(byte red, byte green, byte blue, int WaveDelay) {
-  int Position=0;
- 
-  for(int j=0; j<NUM_LEDS*2; j++)
-  {
-      Position++; // = 0; //Position + Rate;
-      for(int i=0; i<NUM_LEDS; i++) {
-        // sine wave, 3 offset waves make a rainbow!
-        //float level = sin(i+Position) * 127 + 128;
-        //setPixel(i,level,0,0);
-        //float level = sin(i+Position) * 127 + 128;
-        setPixel(i,((sin(i+Position) * 127 + 128)/255)*red,
-                   ((sin(i+Position) * 127 + 128)/255)*green,
-                   ((sin(i+Position) * 127 + 128)/255)*blue);
-      }
-     
-      showStrip();
-      delay(WaveDelay);
-  }
-}
+// The below works when I call it directly, but when I have it in the
+// loop where mode is randomly selected, it just doesn't seem to work
+//void RunningLights(byte red, byte green, byte blue, int WaveDelay) {
+//  int Position=0;
+// 
+//  for(int j=0; j<NUM_LEDS*2; j++)
+//  {
+//      Position++; // = 0; //Position + Rate;
+//      for(int i=0; i<NUM_LEDS; i++) {
+//        // sine wave, 3 offset waves make a rainbow!
+//        //float level = sin(i+Position) * 127 + 128;
+//        //setPixel(i,level,0,0);
+//        //float level = sin(i+Position) * 127 + 128;
+//        setPixel(i,((sin(i+Position) * 127 + 128)/255)*red,
+//                   ((sin(i+Position) * 127 + 128)/255)*green,
+//                   ((sin(i+Position) * 127 + 128)/255)*blue);
+//      }
+//     
+//      showStrip();
+//      delay(WaveDelay);
+//  }
+//}
 
 /*
 // Rainbow cycle along whole strip. Pass delay time (in ms) between frames.
